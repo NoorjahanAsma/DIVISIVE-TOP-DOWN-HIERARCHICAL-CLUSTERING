@@ -1,0 +1,40 @@
+# Step 1: Load
+Datadata(iris)
+# Step 2: Preprocess Data (if needed)
+# No preprocessing required for this example
+# Step 3: Implement Divisive Hierarchical Clustering
+divisive_hc <- function(data, max_clusters) {
+# Define recursive function to divide clusters
+divide_clusters <- function(cluster,
+max_clusters) {if (length(cluster) <=
+max_clusters) {
+return(list(cluster))
+} else {
+# Split cluster into two subclusters
+# Here, we split the cluster in half for simplicity
+midpoint <- length(cluster) %/% 2
+subcluster1 <- cluster[1:midpoint]
+subcluster2 <- cluster[(midpoint + 1):length(cluster)]
+return(c(divide_clusters(subcluster1, max_clusters),
+divide_clusters(subcluster2,
+max_clusters)))
+}
+}
+# Initialize with all data points in a single cluster
+initial_cluster <- 1:nrow(data)
+# Perform divisive hierarchical clustering
+
+clusters <- divide_clusters(initial_cluster,
+max_clusters)return(clusters)
+}
+# Call divisive hierarchical clustering function
+max_clusters <- 3 # Specify the maximum number of
+clustersdivisive_clusters <- divisive_hc(iris[, -5],
+max_clusters)
+# Step 4: Visualize Dendrogram (Optional)
+# Since divisive clustering does not directly produce a dendrogram,
+visualization isnot applicable here.
+# Step 5: Visualize Clustered Data
+# Plot the clustered data using different colors for each cluster
+plot(iris[, c("Petal.Length", "Petal.Width")], col = divisive_clusters$cluster,
+main ="Divisive Hierarchical Clustering of Iris Dataset")
